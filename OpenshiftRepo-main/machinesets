@@ -1,0 +1,37 @@
+[root@ip-172-31-29-68 ocp]# oc get machinesets -n openshift-machine-api
+NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
+prod-kzv5c-worker-us-east-1a   1         1         1       1           3h16m
+[root@ip-172-31-29-68 ocp]# pdoman
+-bash: pdoman: command not found
+[root@ip-172-31-29-68 ocp]# pdoman
+-bash: pdoman: command not found
+[root@ip-172-31-29-68 ocp]# podman
+-bash: podman: command not found
+[root@ip-172-31-29-68 ocp]# oc scale machinesets prod-kzv5c-worker-us-east-1a -n openshift-machine-api
+error: required flag(s) "replicas" not set
+[root@ip-172-31-29-68 ocp]# oc scale machinesets --replicas=2 prod-kzv5c-worker-us-east-1a -n openshift-machine-api
+machineset.machine.openshift.io/prod-kzv5c-worker-us-east-1a scaled
+[root@ip-172-31-29-68 ocp]# oc get machinesets -n openshift-machine-api
+NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
+prod-kzv5c-worker-us-east-1a   2         2         1       1           3h18m
+[root@ip-172-31-29-68 ocp]# oc get nodes
+NAME                          STATUS   ROLES                  AGE     VERSION
+ip-10-0-15-190.ec2.internal   Ready    control-plane,master   3h17m   v1.29.7+4510e9c
+ip-10-0-61-199.ec2.internal   Ready    worker                 175m    v1.29.7+4510e9c
+[root@ip-172-31-29-68 ocp]# oc get nodes
+NAME                          STATUS   ROLES                  AGE     VERSION
+ip-10-0-15-190.ec2.internal   Ready    control-plane,master   3h17m   v1.29.7+4510e9c
+ip-10-0-61-199.ec2.internal   Ready    worker                 175m    v1.29.7+4510e9c
+[root@ip-172-31-29-68 ocp]# oc get nodes
+NAME                          STATUS   ROLES                  AGE     VERSION
+ip-10-0-15-190.ec2.internal   Ready    control-plane,master   3h17m   v1.29.7+4510e9c
+ip-10-0-61-199.ec2.internal   Ready    worker                 175m    v1.29.7+4510e9c
+[root@ip-172-31-29-68 ocp]# oc get nodes
+NAME                          STATUS   ROLES                  AGE     VERSION
+ip-10-0-15-190.ec2.internal   Ready    control-plane,master   3h18m   v1.29.7+4510e9c
+ip-10-0-61-199.ec2.internal   Ready    worker                 175m    v1.29.7+4510e9c
+[root@ip-172-31-29-68 ocp]# oc get nodes
+NAME                          STATUS   ROLES                  AGE     VERSION
+ip-10-0-15-190.ec2.internal   Ready    control-plane,master   3h18m   v1.29.7+4510e9c
+ip-10-0-61-199.ec2.internal   Ready    worker                 175m    v1.29.7+4510e9c
+[root@ip-172-31-29-68 ocp]# oc edit machinesets prod-kzv5c-worker-us-east-1a -n openshift-machine-api
