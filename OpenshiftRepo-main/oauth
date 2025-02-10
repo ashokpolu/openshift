@@ -1,22 +1,13 @@
-[root@ip-172-31-29-68 ocp]# cat oauth.yaml
-apiVersion: config.openshift.io/v1
-kind: OAuth
-metadata:
-  annotations:
-    include.release.openshift.io/ibm-cloud-managed: "true"
-    include.release.openshift.io/self-managed-high-availability: "true"
-    release.openshift.io/create-only: "true"
-  creationTimestamp: "2025-02-10T11:02:01Z"
-  generation: 1
-  name: cluster
-  ownerReferences:
-  - apiVersion: config.openshift.io/v1
-    kind: ClusterVersion
-    name: version
-    uid: 49fac303-2bf2-4a5d-a9ad-4b5c61be8597
-  resourceVersion: "1599"
-  uid: a67a2a37-bf50-4af1-87d4-0628432baeed
-  spec:
+commands--
+htpasswd -c -B -b htpasswd-file admin redhat
+htpasswd -b htpasswd-file developer developer
+
+oc create secret generic localusers --from-file htpasswd=htpasswd-file -n openshift-config
+
+oc adm policy add-cluster-role-to-user cluster-admin admin
+
+oc  edit  oauth cluster and add below line on spec scetion
+spec:
   identityProviders:
   - htpasswd:
       fileData:
@@ -24,3 +15,17 @@ metadata:
     mappingMethod: claim
     name: myusers
     type: HTPasswd
+
+
+oc replace -f oauth.yaml
+oc get pods -n openshift-authentication
+
+oc login -u admin -p redhat
+oc get nodes
+oc get users
+oc get identity
+
+oc login -u developer -p developer
+oc get nodes
+
+
