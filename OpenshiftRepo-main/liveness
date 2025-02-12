@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-exec
+  labels:
+    test: liveness
+spec:
+  containers:
+    - name: liveness
+      image: registry.k8s.io/busybox
+      args:
+        - /bin/sh
+        - -C
+        - touch /tmp/healthy; sleep 30; rm -f /tmp/healthy; sleep 600
+      livenessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/healthy
+        initialDelaySeconds: 5
+        periodSeconds: 5
+
+ChatGPT said:
+This Kubernetes manifest defines a Pod with a liveness probe that checks for the existence of a file (/tmp/healthy) to determine if the container is healthy.
+
+Key Details:
+Container Setup:
+
+Uses the busybox image.
+Runs a command that:
+Creates a file (/tmp/healthy).
+Waits 30 seconds.
+Deletes the file.
+Sleeps for 600 seconds (10 minutes).
+Liveness Probe:
+
+Uses the exec method to check if /tmp/healthy exists by running cat /tmp/healthy.
+Starts checking 5 seconds after the container starts.
+Runs every 5 seconds.
+What Happens?
+Initially, the file exists (/tmp/healthy), so the liveness check passes.
+After 30 seconds, the file is deleted.
+The liveness probe fails since cat /tmp/healthy returns a non-zero exit code.
+Kubernetes kills and restarts the container.
+Practical Use Case
+This is useful when you want Kubernetes to restart a container if it enters a non-recoverable state (like a stuck process).
+
+
+
+
+
+
+
+
